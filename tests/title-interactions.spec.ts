@@ -44,8 +44,8 @@ async function expectSaved(page: Page, expected: string[]) {
   await expect.poll(() => order(page)).toEqual(expected);
 }
 
-// Playwright exposes tap on touch WebKit. Dispatch the remaining touch sequence
-// on its original target to exercise dnd-kit's delay, movement and end handlers.
+// Keep synthetic touches on the original element so dnd-kit sees a single hold
+// and move on touch WebKit. The native iOS selection menu needs a device check.
 async function touch(target: Locator, type: string, x: number, y: number) {
   await target.evaluate((el, args) => {
     const point = { identifier: 1, target: el, clientX: args.x, clientY: args.y,

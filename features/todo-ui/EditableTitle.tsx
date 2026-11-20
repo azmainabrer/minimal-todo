@@ -22,6 +22,7 @@ export type FocusTitle = (position: {
 export interface EditableTitleProps {
   className?: string;
   elementRef?: RefObject<TitleElement | null>;
+  /** Defaults to true for standalone fields. The workspace opts in through its own prop. */
   enhancedInteractions?: boolean;
   registerFocus?: (focus: FocusTitle) => () => void;
   onSubmit?: (text: string, caret: number) => void;

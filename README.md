@@ -68,15 +68,36 @@ opens notes. On a touch-first device, Return creates or splits a task, including
 when auto-capitalization supplies Shift. Composing text with an input method
 keeps Enter and the arrow keys available to that input method.
 
-The prop defaults to `false`. The reusable field and row drag guard live in
-[`features/todo-ui/`](features/todo-ui/). The field accepts text and callbacks
-for editing, submitting at the caret, opening notes, and moving focus. A host
-that uses the touch shield should give the field a positioned parent.
+The workspace prop defaults to `false`. If you import the standalone
+[`EditableTitle`](features/todo-ui/EditableTitle.tsx), its enhanced interactions
+are enabled by default. The field takes text and callbacks for edits, submission
+at the caret, opening notes, and moving focus. For a draggable title, pass
+`suppressTouchTextSelection` and give the field a positioned parent. Forward
+a row touch to your drag sensor when
+[`canStartRowDrag`](features/todo-ui/gestures.ts) returns true for the row and
+the event target.
 
-To run the browser checks, install development dependencies with `npm ci`,
-install the browsers with `npx playwright install chromium webkit`, and run
-`npm run test:interactions`. The suite uses Python 3 to serve a temporary static
-export with both modes and exercises the real IndexedDB store.
+### Checking title interactions
+
+The [interaction workflow](.github/workflows/verify-title-interactions.yml)
+builds the default static app and tests both workspace modes on branch pushes
+and pull requests to `main`. Chromium covers the desktop keyboard and WebKit
+emulates touch. The suite reloads the app to verify edits and task order in
+IndexedDB. Native iPhone selection menus and keyboard auto-capitalization
+still need a physical device check.
+
+To run the checks locally, use Node.js 22 and Python 3.
+
+```sh
+npm ci --ignore-scripts
+npx playwright install chromium webkit
+npm run build
+npm run test:interactions
+```
+
+On Linux, use `npx playwright install --with-deps chromium webkit` to install
+the system libraries as well. The browser suite serves a temporary static export
+on loopback.
 
 ### Your data is yours
 
