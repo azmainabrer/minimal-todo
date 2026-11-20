@@ -51,6 +51,33 @@ writes locally and persists (debounced) — that's the entire data flow.
 | UI (board, tasks, header, drag) | `features/workspace/` |
 | App shell | `app/` |
 
+### Optional title interactions
+
+In `app/page.tsx`, pass `enhancedInteractions` to the existing workspace.
+
+```tsx
+<WorkspaceProvider>
+  <TodosWorkspace enhancedInteractions />
+</WorkspaceProvider>
+```
+
+Tap a task title to edit it. Touch and hold an unfocused title to move the task.
+While editing, a long press selects text. Scrolling or touching an open notes
+sheet leaves the underlying row in place. On a desktop keyboard, Shift+Enter
+opens notes. On a touch-first device, Return creates or splits a task, including
+when auto-capitalization supplies Shift. Composing text with an input method
+keeps Enter and the arrow keys available to that input method.
+
+The prop defaults to `false`. The reusable field and row drag guard live in
+[`features/todo-ui/`](features/todo-ui/). The field accepts text and callbacks
+for editing, submitting at the caret, opening notes, and moving focus. A host
+that uses the touch shield should give the field a positioned parent.
+
+To run the browser checks, install development dependencies with `npm ci`,
+install the browsers with `npx playwright install chromium webkit`, and run
+`npm run test:interactions`. The suite uses Python 3 to serve a temporary static
+export with both modes and exercises the real IndexedDB store.
+
 ### Your data is yours
 
 Everything stays in *your* browser's IndexedDB. It does not sync across devices,
