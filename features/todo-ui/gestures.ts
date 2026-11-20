@@ -18,7 +18,10 @@ export function useCoarsePointer() {
   return useSyncExternalStore(subscribe, hasCoarsePointer, () => false);
 }
 
-/** React portal events bubble through the component tree, even outside the row. */
+/**
+ * Allow drags from the row or its unfocused title shield. Controls handle their
+ * own touches, and a portaled notes sheet can bubble events from outside the row.
+ */
 export function canStartRowDrag(row: Element, target: EventTarget | null) {
   return target instanceof Element && row.contains(target) &&
     !target.closest('input, textarea, select, button, a[href], [contenteditable]:not([contenteditable="false"])');

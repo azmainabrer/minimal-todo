@@ -49,11 +49,14 @@ writes locally and persists (debounced) — that's the entire data flow.
 | Data model & reducer | `lib/workspace/` |
 | Local persistence (IndexedDB) | `lib/workspace/local-store.ts` |
 | UI (board, tasks, header, drag) | `features/workspace/` |
+| Reusable editing and gesture controls | `features/todo-ui/` |
 | App shell | `app/` |
 
-### Optional title interactions
+### Optional task editing and gestures
 
-In `app/page.tsx`, pass `enhancedInteractions` to the existing workspace.
+The optional UI connects the editable task field to the row’s drag sensor and
+keyboard actions. To enable it, pass `enhancedInteractions` to the workspace in
+`app/page.tsx`.
 
 ```tsx
 <WorkspaceProvider>
@@ -77,9 +80,9 @@ a row touch to your drag sensor when
 [`canStartRowDrag`](features/todo-ui/gestures.ts) returns true for the row and
 the event target.
 
-### Checking title interactions
+### Testing task interactions
 
-The [interaction workflow](.github/workflows/verify-title-interactions.yml)
+The [interaction workflow](.github/workflows/task-interactions.yml)
 builds the default static app and tests both workspace modes on branch pushes
 and pull requests to `main`. Chromium covers the desktop keyboard and WebKit
 emulates touch. The suite reloads the app to verify edits and task order in

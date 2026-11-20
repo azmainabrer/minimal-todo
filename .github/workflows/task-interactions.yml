@@ -1,4 +1,4 @@
-name: Verify title interactions
+name: Verify task editing and gestures
 on:
   push:
     branches: ['**']
